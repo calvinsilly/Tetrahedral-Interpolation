@@ -1,0 +1,96 @@
+kernel Tetra : ImageComputationKernel<ePixelWise>
+{
+    Image<eRead, eAccessPoint, eEdgeClamped> src; // the input image
+    Image<eWrite> dst; // the output image
+ 
+ 
+    param:
+        float3 red;
+        float3 grn;
+        float3 blu;
+        float3 cyn;
+        float3 mag;
+        float3 yel;
+ 
+    void define(){
+        defineParam(red, "red", float3(1.f,0.f,0.f));
+        defineParam(grn, "grn", float3(0.f,1.f,0.f));
+        defineParam(blu, "blu", float3(0.f,0.f,1.f));
+        defineParam(cyn, "cyn", float3(0.f,1.f,1.f));
+        defineParam(mag, "mag", float3(1.f,0.f,1.f));
+        defineParam(yel, "yel", float3(1.f,1.f,0.f));
+    }
+ 
+ 
+ 
+    float3 tetra( float3 triplet , float3 corners[6]){
+ 
+                float r = triplet.x;
+                float g = triplet.y;
+                float b = triplet.z;
+ 
+                float3 wht = float3(1.f,1.f,1.f);
+                float3 red = corners[0];
+                float3 yel = corners[1];
+                float3 grn = corners[2];
+                float3 cyn = corners[3];
+                float3 blu = corners[4];
+                float3 mag = corners[5];
+ 
+        if (r>g) {
+            //r>g>b
+            if (g>b){
+                return r*red + g*(yel-red) + b*(wht-yel);
+            }
+            //r>b>g
+            else if (r>b){
+                return r*red + g*(wht-mag) + b*(mag-red);
+            }
+            //b>r>g
+            else{
+                return r*(mag-blu) + g*(wht-mag) + b*blu;
+            }
+	}
+        else {	
+	  //b>g>r  
+            if (b>g){
+                return r*(wht-cyn) + g*(cyn-blu) + b*blu;
+            }
+            //g>b>r
+            else if (b>r){
+                return r*(wht-cyn) + g*grn + b*(cyn-grn);
+            }
+            //g>r>b
+            else{
+                return r*(yel-grn) + g*grn + b*(wht-yel);
+            }
+        }
+    }
+ 
+    void process() {
+        // Read the input image
+ 
+        SampleType(src) input = src();
+ 
+        float3 rgb;
+        rgb.x = input.x;
+        rgb.y = input.y;
+        rgb.z = input.z;
+ 
+        float3 corners[6];
+ 
+        corners[0] = red;
+        corners[1] = yel;
+        corners[2] = grn;
+        corners[3] = cyn;
+        corners[4] = blu;
+        corners[5] = mag;
+ 
+        float3 output = tetra( rgb , corners);
+ 
+ 
+        // Write the result to the output image
+        dst() = float4 ( output.x, output.y , output.z , input.w);
+ 
+    }
+};
