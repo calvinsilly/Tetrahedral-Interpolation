@@ -1,0 +1,38 @@
+set cut_paste_input [stack 0]
+push $cut_paste_input
+Expression {
+ temp_name0 tetra
+ temp_expr0 "\t (  (b>g) ? r*(1-cyn.r) + g*(cyn.r-blu.r) + b*blu.r : ( (b>r) ? r*(1-cyn.r) + g*grn.r + b*(cyn.r-grn.r) : r*(yel.r-grn.r) + g*grn.r + b*(1-yel.r) ) )\n"
+ temp_name1 tetra02
+ temp_expr1 "\t (  (b>g) ? r*(1-cyn.g) + g*(cyn.g-blu.g) + b*blu.g : ( (b>r) ? r*(1-cyn.g) + g*grn.g + b*(cyn.g-grn.g) : r*(yel.g-grn.g) + g*grn.g + b*(1-yel.g) ) )\n"
+ temp_name2 tetra03
+ temp_expr2 "\t (  (b>g) ? r*(1-cyn.b) + g*(cyn.b-blu.b) + b*blu.b : ( (b>r) ? r*(1-cyn.b) + g*grn.b + b*(cyn.b-grn.b) : r*(yel.b-grn.b) + g*grn.b + b*(1-yel.b) ) )"
+ expr0 "\t(r>g) ? ( (g>b) ? r*red.r + g*(yel.r-red.r) + b*(1-yel.r) : ( (r>b) ? r*red.r + g*(1-mag.r) + b*(mag.r-red.r) : r*(mag.r-blu.r) + g*(1-mag.r) + b*blu.r ) ) \n\t:\n\ttetra"
+ expr1 "\t(r>g) ? ( (g>b) ? r*red.g + g*(yel.g-red.g) + b*(1-yel.g) : ( (r>b) ? r*red.g + g*(1-mag.g) + b*(mag.g-red.g) : r*(mag.g-blu.g) + g*(1-mag.g) + b*blu.g ) ) \n\t:\n\ttetra02"
+ expr2 "\t(r>g) ? ( (g>b) ? r*red.b + g*(yel.b-red.b) + b*(1-yel.b) : ( (r>b) ? r*red.b + g*(1-mag.b) + b*(mag.b-red.b) : r*(mag.b-blu.b) + g*(1-mag.b) + b*blu.b ) ) \n\t:\n\ttetra03"
+ name TetraInterp_Expression
+ selected true
+ xpos 1155
+ ypos 25
+ addUserKnob {20 User}
+ addUserKnob {18 red l Red}
+ red {1 0 0}
+ addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 grn l Green}
+ grn {0 1 0}
+ addUserKnob {6 color_rgb_1_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 blu l Blue}
+ blu {0 0 1}
+ addUserKnob {6 color_rgb_2_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 cyn l Cyan}
+ cyn {0 1 1}
+ addUserKnob {6 color_rgb_3_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 mag l Magenta}
+ mag {1 0 1}
+ addUserKnob {6 color_rgb_4_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 yel l Yellow}
+ yel {1 1 0}
+ addUserKnob {6 color_rgb_5_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 info}
+ addUserKnob {26 info_1 l "" +STARTLINE T "<style> a:link \{ color: #ccc \}</style>\n<font color=#ccc><br>\n<b>Tetrahedral Interpolation</b> <br>\ncolor transformations using tetrahedral math.\n<br>\n<p>Written by <a href=https://github.com/calvinsilly>silly calvin</a>\n</p>"}
+}
