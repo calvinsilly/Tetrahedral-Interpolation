@@ -9,7 +9,7 @@ NEW: Check out a port made for Fusion by Ember Light https://github.com/EmberLig
 ## TetraAutomater
 As the name suggests, matches the colors automatically. Can also be used for an inverse operation but not recommended. The python library SymPy will be required.
 
-Originally written for matlab by [Juanjo Salazar](https://www.juanjosalazar.com/), solution was translated later to python by [Ethan Ou](https://www.ethanou.com/).
+Originally written for matlab by [Juanjo Salazar](https://www.juanjosalazar.com/), solution was later translated to python by [Ethan Ou](https://www.ethanou.com/).
 
 ## Papers and Resources
 - http://www.yedlin.net/DisplayPrepDemo/DispPrepDemoFollowup.html
