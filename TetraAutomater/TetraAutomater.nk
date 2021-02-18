@@ -168,7 +168,7 @@ n.knob('yel').setValue((1,1,0))"}
 <b>TetraAutomater</b> <br>\
 Matches the colors automatically.\
 <br>\
-<p>Orignally written for matlab by <a href=https://www.juanjosalazar.com>Juanjo Salazar</a>\
+<p>Originally written for matlab by <a href=https://www.juanjosalazar.com>Juanjo Salazar</a>\
 <br>\
 Solution translated later to python by <a href=https://www.ethanou.com>Ethan Ou</a>\
 </p>"}
