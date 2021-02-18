@@ -1,0 +1,175 @@
+set cut_paste_input [stack 0]
+push $cut_paste_input
+Expression {
+ temp_name0 tetra
+ temp_expr0 "\t (  (b>g) ? r*(1-cyn.r) + g*(cyn.r-blu.r) + b*blu.r : ( (b>r) ? r*(1-cyn.r) + g*grn.r + b*(cyn.r-grn.r) : r*(yel.r-grn.r) + g*grn.r + b*(1-yel.r) ) ) "
+ temp_name1 tetra02
+ temp_expr1 "\t (  (b>g) ? r*(1-cyn.g) + g*(cyn.g-blu.g) + b*blu.g : ( (b>r) ? r*(1-cyn.g) + g*grn.g + b*(cyn.g-grn.g) : r*(yel.g-grn.g) + g*grn.g + b*(1-yel.g) ) ) "
+ temp_name2 tetra03
+ temp_expr2 "\t (  (b>g) ? r*(1-cyn.b) + g*(cyn.b-blu.b) + b*blu.b : ( (b>r) ? r*(1-cyn.b) + g*grn.b + b*(cyn.b-grn.b) : r*(yel.b-grn.b) + g*grn.b + b*(1-yel.b) ) )"
+ expr0 "\t(r>g) ? ( (g>b) ? r*red.r + g*(yel.r-red.r) + b*(1-yel.r) : ( (r>b) ? r*red.r + g*(1-mag.r) + b*(mag.r-red.r) : r*(mag.r-blu.r) + g*(1-mag.r) + b*blu.r ) )  \t: \ttetra"
+ expr1 "\t(r>g) ? ( (g>b) ? r*red.g + g*(yel.g-red.g) + b*(1-yel.g) : ( (r>b) ? r*red.g + g*(1-mag.g) + b*(mag.g-red.g) : r*(mag.g-blu.g) + g*(1-mag.g) + b*blu.g ) )  \t: \ttetra02"
+ expr2 "\t(r>g) ? ( (g>b) ? r*red.b + g*(yel.b-red.b) + b*(1-yel.b) : ( (r>b) ? r*red.b + g*(1-mag.b) + b*(mag.b-red.b) : r*(mag.b-blu.b) + g*(1-mag.b) + b*blu.b ) )  \t: \ttetra03"
+ name TetraAutomater
+ selected true
+ xpos 286
+ ypos -75
+ addUserKnob {20 User}
+ addUserKnob {22 calculate l Calculate T "from sympy import *\
+ 
+n = nuke.thisNode()
+ 
+bi = n.knob('bi').getValue()
+gi = n.knob('gi').getValue()
+ri = n.knob('ri').getValue()
+yi = n.knob('yi').getValue()
+mi = n.knob('mi').getValue()
+ci = n.knob('ci').getValue()
+ 
+bo = n.knob('bo').getValue()
+go = n.knob('go').getValue()
+ro = n.knob('ro').getValue()
+yo = n.knob('yo').getValue()
+mo = n.knob('mo').getValue()
+co = n.knob('co').getValue()
+ 
+r1, r2, r3, g1, g2, g3, b1, b2, b3, c1, c2, c3, m1, m2, m3, y1, y2, y3 = symbols('r1 r2 r3 g1 g2 g3 b1 b2 b3 c1 c2 c3 m1 m2 m3 y1 y2 y3')
+ 
+result = solve( [-ro [0] + ri [0] * r1 + ri [1] * (y1 - r1) + ri [2] * (1-y1),\
+-ro [1] + ri [0] * r2 + ri [1] * (y2 - r2) + ri [2] * (1-y2),\
+-ro [2] + ri [0] * r3 + ri [1] * (y3 - r3) + ri [2] * (1-y3),\
+-go [0] + gi [0] * (y1-g1) + gi [1] * g1 + gi [2] * (1-y1),\
+-go [1] + gi [0] * (y2-g2) + gi [1] * g2 + gi [2] * (1-y2),\
+-go [2] + gi [0] * (y3-g3) + gi [1] * g3 + gi [2] * (1-y3),\
+-bo [0] + bi [0] * (1-c1) + bi [1] * (c1-b1) + bi [2] * b1,\
+-bo [1] + bi [0] * (1-c2) + bi [1] * (c2-b2) + bi [2] * b2,\
+-bo [2] + bi [0] * (1-c3) + bi [1] * (c3-b3) + bi [2] * b3,\
+-co [0] + ci [0] * (1-c1) + ci [1] * (c1-b1) + ci [2] * b1,\
+-co [1] + ci [0] * (1-c2) + ci [1] * (c2-b2) + ci [2] * b2,\
+-co [2] + ci [0] * (1-c3) + ci [1] * (c3-b3) + ci [2] * b3,\
+-mo [0] + mi [0] * r1 + mi [1] * (1-m1) + mi [2] * (m1-r1),\
+-mo [1] + mi [0] * r2 + mi [1] * (1-m2) + mi [2] * (m2-r2),\
+-mo [2] + mi [0] * r3 + mi [1] * (1-m3) + mi [2] * (m3-r3),\
+-yo [0] + yi [0] * r1 + yi [1] * (y1 - r1) + yi [2] * (1-y1),\
+-yo [1] + yi [0] * r2 + yi [1] * (y2 - r2) + yi [2] * (1-y2),\
+-yo [2] + yi [0] * r3 + yi [1] * (y3 - r3) + yi [2] * (1-y3)],  [r1, r2, r3, g1, g2, g3, b1, b2, b3, c1, c2, c3, m1, m2, m3, y1, y2, y3])
+ 
+n.knob('red').setValue((result [r1],result [r2],result [r3]))
+n.knob('grn').setValue((result [g1],result [g2],result [g3]))
+n.knob('blu').setValue((result [b1],result [b2],result [b3]))
+n.knob('cyn').setValue((result [c1],result [c2],result [c3]))
+n.knob('mag').setValue((result [m1],result [m2],result [m3]))
+n.knob('yel').setValue((result [y1],result [y2],result [y3]))
+" +STARTLINE}
+ addUserKnob {22 reset -STARTLINE T "n = nuke.thisNode()
+ 
+n.knob('ri').setValue((1,0,0))
+n.knob('gi').setValue((0,1,0))
+n.knob('bi').setValue((0,0,1))
+n.knob('ci').setValue((0,1,1))
+n.knob('mi').setValue((1,0,1))
+n.knob('yi').setValue((1,1,0))
+ 
+n.knob('ro').setValue((1,0,0))
+n.knob('go').setValue((0,1,0))
+n.knob('bo').setValue((0,0,1))
+n.knob('co').setValue((0,1,1))
+n.knob('mo').setValue((1,0,1))
+n.knob('yo').setValue((1,1,0))
+ 
+n.knob('red').setValue((1,0,0))
+n.knob('grn').setValue((0,1,0))
+n.knob('blu').setValue((0,0,1))
+n.knob('cyn').setValue((0,1,1))
+n.knob('mag').setValue((1,0,1))
+n.knob('yel').setValue((1,1,0))"}
+ addUserKnob {26 Red l "" +STARTLINE T Red}
+ addUserKnob {18 ri l input}
+ ri {1 0 0}
+ addUserKnob {6 ri_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_1_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 ro l output}
+ ro {1 0 0}
+ addUserKnob {6 ro_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 red_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {18 red l Red}
+ red {1 0 0}
+ addUserKnob {6 red_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {26 Green l "" +STARTLINE T Green}
+ addUserKnob {18 gi l input}
+ gi {0 1 0}
+ addUserKnob {6 gi_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_2_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 go l output}
+ go {0 1 0}
+ addUserKnob {6 go_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_3_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 grn l Green}
+ grn {0 1 0}
+ addUserKnob {6 grn_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {26 Blue l "" +STARTLINE T Blue}
+ addUserKnob {18 bi l input}
+ bi {0 0 1}
+ addUserKnob {6 bi_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_4_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 bo l output}
+ bo {0 0 1}
+ addUserKnob {6 bo_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_5_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 blu_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 blu l Blue}
+ blu {0 0 1}
+ addUserKnob {6 blu_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {26 Cyan l "" +STARTLINE T Cyan}
+ addUserKnob {18 ci l input}
+ ci {0 1 1}
+ addUserKnob {6 ci_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_6_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {18 co l output}
+ co {0 1 1}
+ addUserKnob {6 co_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_7_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {18 cyn l Cyan}
+ cyn {0 1 1}
+ addUserKnob {6 cyn_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 Magenta l "" +STARTLINE T Magenta}
+ addUserKnob {18 mi l input}
+ mi {1 0 1}
+ addUserKnob {6 mi_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_8_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 mo l output}
+ mo {1 0 1}
+ addUserKnob {6 mo_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_9_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 mag l Magenta}
+ mag {1 0 1}
+ addUserKnob {6 mag_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {26 Yellow l "" +STARTLINE T Yellow}
+ addUserKnob {18 yi l input}
+ yi {1 1 0}
+ addUserKnob {6 yi_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_10_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 yo l output}
+ yo {1 1 0}
+ addUserKnob {6 yo_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_rgb_11_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {18 yel l Yellow}
+ yel {1 1 0}
+ addUserKnob {6 yel_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {20 info}
+ addUserKnob {26 info_1 l "" +STARTLINE T "<style> a:link \{ color: #ccc \}</style>\
+<font color=#ccc><br>\
+<b>TetraAutomater</b> <br>\
+Matches the colors automatically.\
+<br>\
+<p>Orignally written for matlab by <a href=https://www.juanjosalazar.com>Juanjo Salazar</a>\
+<br>\
+Solution translated later to python by <a href=https://www.ethanou.com>Ethan Ou</a>\
+</p>"}
+}
