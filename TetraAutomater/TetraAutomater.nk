@@ -1,5 +1,5 @@
 set cut_paste_input [stack 0]
-version 13.0 v1
+version 13.1 v3
 push $cut_paste_input
 Expression {
  temp_name0 tetra
@@ -13,11 +13,11 @@ Expression {
  expr2 "\t(r>g) ? ( (g>b) ? r*red.b + g*(yel.b-red.b) + b*(1-yel.b) : ( (r>b) ? r*red.b + g*(1-mag.b) + b*(mag.b-red.b) : r*(mag.b-blu.b) + g*(1-mag.b) + b*blu.b ) )  \t: \ttetra03"
  name TetraAutomater
  selected true
- xpos 434
- ypos 243
+ xpos -164
+ ypos -13
  addUserKnob {20 User}
- addUserKnob {22 calculate l Calculate T "from sympy import *\n \nn = nuke.thisNode()\n \nbi = n.knob('bi').getValue()\ngi = n.knob('gi').getValue()\nri = n.knob('ri').getValue()\nyi = n.knob('yi').getValue()\nmi = n.knob('mi').getValue()\nci = n.knob('ci').getValue()\n \nbo = n.knob('bo').getValue()\ngo = n.knob('go').getValue()\nro = n.knob('ro').getValue()\nyo = n.knob('yo').getValue()\nmo = n.knob('mo').getValue()\nco = n.knob('co').getValue()\n \nr1, r2, r3, g1, g2, g3, b1, b2, b3, c1, c2, c3, m1, m2, m3, y1, y2, y3 = symbols('r1 r2 r3 g1 g2 g3 b1 b2 b3 c1 c2 c3 m1 m2 m3 y1 y2 y3')\n\nresult = solve(\[-ro\[0] + ri\[0] * r1 + ri\[1] * (y1 - r1) + ri\[2] * (1-y1),\n-ro\[1] + ri\[0] * r2 + ri\[1] * (y2 - r2) + ri\[2] * (1-y2),\n-ro\[2] + ri\[0] * r3 + ri\[1] * (y3 - r3) + ri\[2] * (1-y3),\n-go\[0] + gi\[0] * (y1-g1) + gi\[1] * g1 + gi\[2] * (1-y1),\n-go\[1] + gi\[0] * (y2-g2) + gi\[1] * g2 + gi\[2] * (1-y2),\n-go\[2] + gi\[0] * (y3-g3) + gi\[1] * g3 + gi\[2] * (1-y3),\n-bo\[0] + bi\[0] * (1-c1) + bi\[1] * (c1-b1) + bi\[2] * b1,\n-bo\[1] + bi\[0] * (1-c2) + bi\[1] * (c2-b2) + bi\[2] * b2,\n-bo\[2] + bi\[0] * (1-c3) + bi\[1] * (c3-b3) + bi\[2] * b3,\n-co\[0] + ci\[0] * (1-c1) + ci\[1] * (c1-b1) + ci\[2] * b1,\n-co\[1] + ci\[0] * (1-c2) + ci\[1] * (c2-b2) + ci\[2] * b2,\n-co\[2] + ci\[0] * (1-c3) + ci\[1] * (c3-b3) + ci\[2] * b3,\n-mo\[0] + mi\[0] * r1 + mi\[1] * (1-m1) + mi\[2] * (m1-r1),\n-mo\[1] + mi\[0] * r2 + mi\[1] * (1-m2) + mi\[2] * (m2-r2),\n-mo\[2] + mi\[0] * r3 + mi\[1] * (1-m3) + mi\[2] * (m3-r3),\n-yo\[0] + yi\[0] * r1 + yi\[1] * (y1 - r1) + yi\[2] * (1-y1),\n-yo\[1] + yi\[0] * r2 + yi\[1] * (y2 - r2) + yi\[2] * (1-y2),\n-yo\[2] + yi\[0] * r3 + yi\[1] * (y3 - r3) + yi\[2] * (1-y3)], \[r1, r2, r3, g1, g2, g3, b1, b2, b3, c1, c2, c3, m1, m2, m3, y1, y2, y3])\n\nn.knob('red').setValue((result\[r1], result\[r2], result\[r3]))\nn.knob('grn').setValue((result\[g1], result\[g2], result\[g3]))\nn.knob('blu').setValue((result\[b1], result\[b2], result\[b3]))\nn.knob('cyn').setValue((result\[c1], result\[c2], result\[c3]))\nn.knob('mag').setValue((result\[m1], result\[m2], result\[m3]))\nn.knob('yel').setValue((result\[y1], result\[y2], result\[y3]))" +STARTLINE}
- addUserKnob {22 reset -STARTLINE T "n = nuke.thisNode()\n \nn.knob('ri').setValue((1,0,0))\nn.knob('gi').setValue((0,1,0))\nn.knob('bi').setValue((0,0,1))\nn.knob('ci').setValue((0,1,1))\nn.knob('mi').setValue((1,0,1))\nn.knob('yi').setValue((1,1,0))\n \nn.knob('ro').setValue((1,0,0))\nn.knob('go').setValue((0,1,0))\nn.knob('bo').setValue((0,0,1))\nn.knob('co').setValue((0,1,1))\nn.knob('mo').setValue((1,0,1))\nn.knob('yo').setValue((1,1,0))\n \nn.knob('red').setValue((1,0,0))\nn.knob('grn').setValue((0,1,0))\nn.knob('blu').setValue((0,0,1))\nn.knob('cyn').setValue((0,1,1))\nn.knob('mag').setValue((1,0,1))\nn.knob('yel').setValue((1,1,0))"}
+ addUserKnob {22 calculate l Calculate +INVISIBLE T "from sympy import *\n \nn = nuke.thisNode()\n \nbi = n.knob('bi').getValue()\ngi = n.knob('gi').getValue()\nri = n.knob('ri').getValue()\nyi = n.knob('yi').getValue()\nmi = n.knob('mi').getValue()\nci = n.knob('ci').getValue()\n \nbo = n.knob('bo').getValue()\ngo = n.knob('go').getValue()\nro = n.knob('ro').getValue()\nyo = n.knob('yo').getValue()\nmo = n.knob('mo').getValue()\nco = n.knob('co').getValue()\n \nr1, r2, r3, g1, g2, g3, b1, b2, b3, c1, c2, c3, m1, m2, m3, y1, y2, y3 = symbols('r1 r2 r3 g1 g2 g3 b1 b2 b3 c1 c2 c3 m1 m2 m3 y1 y2 y3')\n\nresult = solve(\[ri\[0] * r1 + ri\[1] * (y1 - r1) + ri\[2] * (1-y1) - ro\[0],\n\t\t\t\tri\[0] * r2 + ri\[1] * (y2 - r2) + ri\[2] * (1-y2) - ro\[1],\n\t\t\t\tri\[0] * r3 + ri\[1] * (y3 - r3) + ri\[2] * (1-y3) - ro\[2],\n\t\t\t\t\n\t\t\t\tgi\[0] * (y1-g1) + gi\[1] * g1 + gi\[2] * (1-y1) - go\[0],\n\t\t\t\tgi\[0] * (y2-g2) + gi\[1] * g2 + gi\[2] * (1-y2) - go\[1],\n\t\t\t\tgi\[0] * (y3-g3) + gi\[1] * g3 + gi\[2] * (1-y3) - go\[2],\n\t\t\t\t\n\t\t\t\tbi\[0] * (1-c1) + bi\[1] * (c1-b1) + bi\[2] * b1 - bo\[0],\n\t\t\t\tbi\[0] * (1-c2) + bi\[1] * (c2-b2) + bi\[2] * b2 - bo\[1],\n\t\t\t\tbi\[0] * (1-c3) + bi\[1] * (c3-b3) + bi\[2] * b3 - bo\[2],\n\t\t\t\t\n\t\t\t\tci\[0] * (1-c1) + ci\[1] * (c1-b1) + ci\[2] * b1 - co\[0],\n\t\t\t\tci\[0] * (1-c2) + ci\[1] * (c2-b2) + ci\[2] * b2 - co\[1],\n\t\t\t\tci\[0] * (1-c3) + ci\[1] * (c3-b3) + ci\[2] * b3 - co\[2],\n\t\t\t\t\n\t\t\t\tmi\[0] * r1 + mi\[1] * (1-m1) + mi\[2] * (m1-r1) - mo\[0],\n\t\t\t\tmi\[0] * r2 + mi\[1] * (1-m2) + mi\[2] * (m2-r2) - mo\[1],\n\t\t\t\tmi\[0] * r3 + mi\[1] * (1-m3) + mi\[2] * (m3-r3) - mo\[2],\n\t\t\t\t\n\t\t\t\tyi\[0] * r1 + yi\[1] * (y1 - r1) + yi\[2] * (1-y1) - yo\[0],\n\t\t\t\tyi\[0] * r2 + yi\[1] * (y2 - r2) + yi\[2] * (1-y2) - yo\[1],\n\t\t\t\tyi\[0] * r3 + yi\[1] * (y3 - r3) + yi\[2] * (1-y3) - yo\[2]],\n\t\t\t\t\n\t\t\t\t\[r1, r2, r3, g1, g2, g3, b1, b2, b3, c1, c2, c3, m1, m2, m3, y1, y2, y3])\n\nn.knob('red').setValue((result\[r1], result\[r2], result\[r3]))\nn.knob('grn').setValue((result\[g1], result\[g2], result\[g3]))\nn.knob('blu').setValue((result\[b1], result\[b2], result\[b3]))\nn.knob('cyn').setValue((result\[c1], result\[c2], result\[c3]))\nn.knob('mag').setValue((result\[m1], result\[m2], result\[m3]))\nn.knob('yel').setValue((result\[y1], result\[y2], result\[y3]))\n" +STARTLINE}
+ addUserKnob {22 reset -STARTLINE T "n = nuke.thisNode()\n \nn.knob('ri').setValue((1,0,0))\nn.knob('gi').setValue((0,1,0))\nn.knob('bi').setValue((0,0,1))\nn.knob('ci').setValue((0,1,1))\nn.knob('mi').setValue((1,0,1))\nn.knob('yi').setValue((1,1,0))\n \nn.knob('ro').setValue((1,0,0))\nn.knob('go').setValue((0,1,0))\nn.knob('bo').setValue((0,0,1))\nn.knob('co').setValue((0,1,1))\nn.knob('mo').setValue((1,0,1))\nn.knob('yo').setValue((1,1,0))"}
  addUserKnob {26 Red l "" +STARTLINE T Red}
  addUserKnob {18 ri l input}
  ri {1 0 0}
@@ -29,7 +29,7 @@ Expression {
  addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {6 red_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
  addUserKnob {18 red l Red}
- red {1 0 0}
+ red {{(ri.b*yi.g-ro.r*yi.g-ri.g*yi.b+ro.r*yi.b+ri.g*yo.r-ri.b*yo.r)/(ri.g*yi.r-ri.b*yi.r-ri.r*yi.g+ri.b*yi.g+ri.r*yi.b-ri.g*yi.b)} {(ri.b*yi.g-ro.g*yi.g-ri.g*yi.b+ro.g*yi.b+ri.g*yo.g-ri.b*yo.g)/(ri.g*yi.r-ri.b*yi.r-ri.r*yi.g+ri.b*yi.g+ri.r*yi.b-ri.g*yi.b)} {(ri.b*yi.g-ro.b*yi.g-ri.g*yi.b+ro.b*yi.b+ri.g*yo.b-ri.b*yo.b)/(ri.g*yi.r-ri.b*yi.r-ri.r*yi.g+ri.b*yi.g+ri.r*yi.b-ri.g*yi.b)}}
  addUserKnob {6 red_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {26 ""}
  addUserKnob {26 Green l "" +STARTLINE T Green}
@@ -42,7 +42,7 @@ Expression {
  addUserKnob {6 go_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {6 color_rgb_3_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {18 grn l Green}
- grn {0 1 0}
+ grn {{(-gi.r*(ri.b-ro.r)*(yi.r-yi.g)+go.r*(ri.b*yi.r+ri.r*yi.g-ri.b*yi.g-ri.r*yi.b+ri.g*(-yi.r+yi.b))+gi.r*(ri.r-ri.g)*(yi.b-yo.r)+gi.b*(-ro.r*yi.r-ri.r*yi.g+ro.r*yi.g+ri.g*(yi.r-yo.r)+ri.r*yo.r))/((gi.r-gi.g)*(ri.b*(-yi.r+yi.g)+ri.g*(yi.r-yi.b)+ri.r*(-yi.g+yi.b)))} {(-gi.r*(ri.b-ro.g)*(yi.r-yi.g)+go.g*(ri.b*yi.r+ri.r*yi.g-ri.b*yi.g-ri.r*yi.b+ri.g*(-yi.r+yi.b))+gi.r*(ri.r-ri.g)*(yi.b-yo.g)+gi.b*(-ro.g*yi.r-ri.r*yi.g+ro.g*yi.g+ri.g*(yi.r-yo.g)+ri.r*yo.g))/((gi.r-gi.g)*(ri.b*(-yi.r+yi.g)+ri.g*(yi.r-yi.b)+ri.r*(-yi.g+yi.b)))} {(-gi.r*(ri.b-ro.b)*(yi.r-yi.g)+go.b*(ri.b*yi.r+ri.r*yi.g-ri.b*yi.g-ri.r*yi.b+ri.g*(-yi.r+yi.b))+gi.r*(ri.r-ri.g)*(yi.b-yo.b)+gi.b*(-ro.b*yi.r-ri.r*yi.g+ro.b*yi.g+ri.g*(yi.r-yo.b)+ri.r*yo.b))/((gi.r-gi.g)*(ri.b*(-yi.r+yi.g)+ri.g*(yi.r-yi.b)+ri.r*(-yi.g+yi.b)))}}
  addUserKnob {6 grn_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {26 ""}
  addUserKnob {26 Blue l "" +STARTLINE T Blue}
@@ -56,7 +56,7 @@ Expression {
  addUserKnob {6 color_rgb_5_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {6 blu_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {18 blu l Blue}
- blu {0 0 1}
+ blu {{(bi.g*ci.r-bo.r*ci.r-bi.r*ci.g+bo.r*ci.g+bi.r*co.r-bi.g*co.r)/(bi.g*ci.r-bi.b*ci.r-bi.r*ci.g+bi.b*ci.g+bi.r*ci.b-bi.g*ci.b)} {(bi.g*ci.r-bo.g*ci.r-bi.r*ci.g+bo.g*ci.g+bi.r*co.g-bi.g*co.g)/(bi.g*ci.r-bi.b*ci.r-bi.r*ci.g+bi.b*ci.g+bi.r*ci.b-bi.g*ci.b)} {(bi.g*ci.r-bo.b*ci.r-bi.r*ci.g+bo.b*ci.g+bi.r*co.b-bi.g*co.b)/(bi.g*ci.r-bi.b*ci.r-bi.r*ci.g+bi.b*ci.g+bi.r*ci.b-bi.g*ci.b)}}
  addUserKnob {6 blu_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {26 ""}
  addUserKnob {26 Cyan l "" +STARTLINE T Cyan}
@@ -69,7 +69,7 @@ Expression {
  addUserKnob {6 co_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {6 color_rgb_7_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
  addUserKnob {18 cyn l Cyan}
- cyn {0 1 1}
+ cyn {{((bi.r-bo.r)*(ci.g-ci.b)-(bi.g-bi.b)*(ci.r-co.r))/(bi.b*(ci.r-ci.g)+bi.r*(ci.g-ci.b)+bi.g*(-ci.r+ci.b))} {((bi.r-bo.g)*(ci.g-ci.b)-(bi.g-bi.b)*(ci.r-co.g))/(bi.b*(ci.r-ci.g)+bi.r*(ci.g-ci.b)+bi.g*(-ci.r+ci.b))} {((bi.r-bo.b)*(ci.g-ci.b)-(bi.g-bi.b)*(ci.r-co.b))/(bi.b*(ci.r-ci.g)+bi.r*(ci.g-ci.b)+bi.g*(-ci.r+ci.b))}}
  addUserKnob {6 cyn_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
  addUserKnob {26 ""}
  addUserKnob {26 Magenta l "" +STARTLINE T Magenta}
@@ -82,7 +82,7 @@ Expression {
  addUserKnob {6 mo_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {6 color_rgb_9_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {18 mag l Magenta}
- mag {1 0 1}
+ mag {{(mi.g*(-ri.b*yi.r-ri.r*yi.g+ri.b*yi.g+ri.g*(yi.r-yi.b)+ri.r*yi.b)+mo.r*(-ri.g*yi.r+ri.b*yi.r+ri.r*yi.g-ri.b*yi.g-ri.r*yi.b+ri.g*yi.b)+(mi.r-mi.b)*(ri.b*yi.g-ro.r*yi.g-ri.g*yi.b+ro.r*yi.b+ri.g*yo.r-ri.b*yo.r))/((mi.g-mi.b)*(ri.b*(-yi.r+yi.g)+ri.g*(yi.r-yi.b)+ri.r*(-yi.g+yi.b)))} {(mi.g-mo.g+((-mi.r+mi.b)*(ro.g*(yi.g-yi.b)+ri.g*(yi.b-yo.g)+ri.b*(-yi.g+yo.g)))/(ri.b*(-yi.r+yi.g)+ri.g*(yi.r-yi.b)+ri.r*(-yi.g+yi.b)))/(mi.g-mi.b)} {(mi.g-mo.b+((-mi.r+mi.b)*(ro.b*(yi.g-yi.b)+ri.g*(yi.b-yo.b)+ri.b*(-yi.g+yo.b)))/(ri.b*(-yi.r+yi.g)+ri.g*(yi.r-yi.b)+ri.r*(-yi.g+yi.b)))/(mi.g-mi.b)}}
  addUserKnob {6 mag_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {26 ""}
  addUserKnob {26 Yellow l "" +STARTLINE T Yellow}
@@ -95,8 +95,8 @@ Expression {
  addUserKnob {6 yo_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {6 color_rgb_11_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
  addUserKnob {18 yel l Yellow}
- yel {1 1 0}
+ yel {{((ri.b-ro.r)*(yi.r-yi.g)-(ri.r-ri.g)*(yi.b-yo.r))/(ri.b*(yi.r-yi.g)+ri.r*(yi.g-yi.b)+ri.g*(-yi.r+yi.b))} {((ri.b-ro.g)*(yi.r-yi.g)-(ri.r-ri.g)*(yi.b-yo.g))/(ri.b*(yi.r-yi.g)+ri.r*(yi.g-yi.b)+ri.g*(-yi.r+yi.b))} {((ri.b-ro.b)*(yi.r-yi.g)-(ri.r-ri.g)*(yi.b-yo.b))/(ri.b*(yi.r-yi.g)+ri.r*(yi.g-yi.b)+ri.g*(-yi.r+yi.b))}}
  addUserKnob {6 yel_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
  addUserKnob {20 info}
- addUserKnob {26 info_1 l "" +STARTLINE T "<style> a:link \{ color: #ccc \}</style> <font color=#ccc><br> <b>TetraAutomater</b> <br> Matches the colors automatically. <br> <p>Originally written for matlab by <a href=https://www.juanjosalazar.com>Juanjo Salazar</a> <br> Solution translated later to python by <a href=https://www.ethanou.com>Ethan Ou</a> </p>"}
+ addUserKnob {26 info_1 l "" +STARTLINE T "<style> a:link \{ color: #ccc \}</style> <font color=#ccc><br> <b>TetraAutomater</b> <br> Matches the colors automatically. <br> <p>Originally written for matlab by <a href=https://www.juanjosalazar.com>Juanjo Salazar</a>, <br> solution translated later to python by <a href=https://www.ethanou.com>Ethan Ou\n</a> <br>\nand now an explicit algebraic solution was found using Mathematica.\n</p>"}
 }
