@@ -16,11 +16,11 @@ Video demonstration: https://www.youtube.com/watch?v=8kBkYEiAkIw
 NEW: Check out a port made for Fusion by Ember Light https://github.com/EmberLightVFX/Tetrahedral-Interpolation-for-Fusion
 
 ## TetraAutomater
-![](TetraAutomater_Example_01.gif)
+![](TetraAutomater/TetraAutomater_Example_01.gif)
 
 As the name suggests, matches the 6 colors automatically, given an input and output. Can also be used for an inverse operation but not recommended. The python library SymPy will be required (found SymPy==1.5 to work correctly, newer versions seem to cause issues due to some change to how the solver works).
 
-Originally written for MATLAB by [Juanjo Salazar](https://www.juanjosalazar.com/), solution was later translated to python by [Ethan Ou](https://github.com/ethan-ou/).
+Originally written for MATLAB by [Juanjo Salazar](https://www.juanjosalazar.com/), solution was later translated to python by [Ethan Ou](https://github.com/ethan-ou/) and now an explicit algebraic solution was found using Mathematica, which avoids the use of python and for solving the same system of equations *everytime*.
 
 ## Papers and Resources
 - http://www.yedlin.net/DisplayPrepDemo/DispPrepDemoFollowup.html
