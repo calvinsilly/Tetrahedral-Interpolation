@@ -1,3 +1,9 @@
+//TetraInterp v001 Feb 26, 2018 by Steve Yedlin
+//with help from Eric Cameron and Richard Goedeken
+ 
+//Tetrahedral interpolation is invertible IF the
+//cube corners are not turned inside out.
+//For example, as long as cyan is not greener than green.
 kernel Tetra : ImageComputationKernel<ePixelWise>
 {
     Image<eRead, eAccessPoint, eEdgeClamped> src; // the input image
@@ -11,6 +17,7 @@ kernel Tetra : ImageComputationKernel<ePixelWise>
         float3 cyn;
         float3 mag;
         float3 yel;
+        bool inv;
  
     void define(){
         defineParam(red, "red", float3(1.f,0.f,0.f));
@@ -21,6 +28,107 @@ kernel Tetra : ImageComputationKernel<ePixelWise>
         defineParam(yel, "yel", float3(1.f,1.f,0.f));
     }
  
+    float determinantMinor( int rowHeight, int columnWidth, float3x3 matrix)
+    {
+ 
+        int y1 = rowHeight	== 0 ? 1 : 0;
+        int y2 = rowHeight	== 2 ? 1 : 2;
+ 
+        int x1 = columnWidth == 0 ? 1 : 0;
+        int x2 = columnWidth == 2 ? 1 : 2;
+ 
+        return (matrix[y1][x1] * matrix[y2][x2]) - (matrix[y1][x2] * matrix[y2][x1]);
+    }
+ 
+    float determinant(float3x3 theMatrix)
+    {
+        return (theMatrix[0][0] * determinantMinor(0.f,0.f,theMatrix))
+        - (theMatrix[0][1] * determinantMinor(0.f,1.f,theMatrix))
+        + (theMatrix[0][2] * determinantMinor(0.f,2.f,theMatrix));
+    }
+ 
+    float3x3 matrixInverse(float3x3 input)
+    {
+        float det = determinant(input);
+
+        float3x3 output;
+         int x,y;
+         for (y = 0; y<3; y++)
+            for (x = 0; x<3; x++)
+            {
+                output[y][x] = determinantMinor(x,y,input) * (1.f / det);
+                if( 1 == ((x+y) % 2) )
+                    output[y][x] = - output[y][x];
+            }
+        return output;
+    }
+ 
+    //A function that returns the rotational distance of a point (around the gray diagonal) from red
+    float pt_ang(float3 triplet , float3 corners[6]){
+		
+        float3 rc0 = corners[0];  //red corner is the first in the array
+        float3 tr0 = triplet;
+        float eps = 1e-6; 	   //small nudge to avoid what seems to be precision errors..
+
+        //missing rotation..
+	float a_ang = PI/4.f;
+        float3 tr1;
+        tr1.x = tr0.x;
+        tr1.y = tr0.y * cos(a_ang) + tr0.z * sin(a_ang);
+        tr1.z = tr0.y * (-sin(a_ang)) + tr0.z * cos(a_ang);
+        float3 rc1;
+        rc1.x = rc0.x;
+        rc1.y = rc0.y * cos(a_ang) + rc0.z * sin(a_ang);
+        rc1.z = rc0.y * (-sin(a_ang)) + rc0.z * cos(a_ang);
+	
+        //rotate so that gray diagonal is vertical	
+        float b_ang = atan2(sqrt(2),1.f)-PI/2.f;
+        float3 tr2;
+        tr2.x = tr1.x * cos(b_ang) + tr1.y * sin(b_ang);
+        tr2.y = tr1.x * (-sin(b_ang)) + tr1.y * cos(b_ang);
+        tr2.z = tr1.z;
+        float3 rc2;
+        rc2.x = rc1.x * cos(b_ang) + rc1.y * sin(b_ang);
+        rc2.y = rc1.x * (-sin(b_ang)) + rc1.y * cos(b_ang);
+        rc2.z = rc1.z;
+ 
+        //now rotate on the now-vertical gray axis so that red is at -pi rotation angle
+        float g_ang =  atan2(rc2.x,rc2.z) - PI;
+        float3 tr3;
+        tr3.x = tr2.x * cos(g_ang) + tr2.z * (-sin(g_ang));
+        tr3.y = tr2.y;
+        tr3.z = tr2.x * sin(g_ang) + tr2.z * cos(g_ang);
+        float3 rc3;
+        rc3.x = rc2.x * cos(g_ang) + rc2.z * (-sin(g_ang));
+        rc3.y = rc2.y;
+        rc3.z = rc2.x * sin(g_ang) + rc2.z * cos(g_ang);
+        
+        return atan2(tr3.x - eps, tr3.z);  //here's where epsilon is used
+    }
+ 
+ 
+    //A function that finds which of the 6 tetrahedrons a point is contained in,
+    //even if the cube has been deformed
+    int tetra_region(float3 rgb, float3 corners[6]) {
+
+        float ang = pt_ang(rgb , corners);
+ 
+        float corner_angs[6];
+        for (int i = 0; i < 6; i++){
+            corner_angs[i] = pt_ang(corners[i] , corners);
+        }
+ 
+        int region = 5;
+        for (int i = 0; i < 5; i++) {
+            if ( corner_angs[i] <= ang && ang < corner_angs[i+1] ){
+                region = i;
+                break;
+            }
+        }
+ 
+        return region;
+ 
+    }
  
  
     float3 tetra( float3 triplet , float3 corners[6]){
@@ -67,6 +175,86 @@ kernel Tetra : ImageComputationKernel<ePixelWise>
         }
     }
  
+    float3 inv_tetra( float3 triplet , float3 corners[6]){
+ 
+        float r = triplet.x;
+        float g = triplet.y;
+        float b = triplet.z;
+ 
+        float3 wht = float3(1.f,1.f,1.f);
+        float3 red = corners[0];
+        float3 yel = corners[1];
+        float3 grn = corners[2];
+        float3 cyn = corners[3];
+        float3 blu = corners[4];
+        float3 mag = corners[5];
+ 
+ 
+        int region = tetra_region(triplet,corners);
+        float3 cR;
+        float3 cG;
+        float3 cB;
+ 
+        if (region == 0){
+            //r>g>b 
+            cR = red;
+            cG = yel-red;
+            cB = wht-yel;
+        }
+        else if (region == 1){
+            //g>r>b
+            cR = yel-grn;
+            cG = grn;
+            cB = wht-yel;
+        }
+        else if (region == 2){
+            //g>b>r
+            cR = wht-cyn;
+            cG = grn;
+            cB = cyn-grn;
+        }
+        else if (region == 3){
+	  //b>g>r 
+            cR = wht-cyn;
+            cG = cyn-blu;
+            cB = blu;
+        }
+        else if (region == 4){
+            //b>r>g
+            cR = mag-blu;
+            cG = wht-mag;
+            cB = blu;
+        }
+        else {
+            //r>g>b
+            cR = red;
+            cG = wht-mag;
+            cB = mag-red;
+        }
+ 
+ 
+        float3x3 matrix = float3x3(cR.x,cR.y,cR.z,cG.x,cG.y,cG.z,cB.x,cB.y,cB.z);
+        float3x3 inverse = matrixInverse(matrix);
+ 
+        cR.x = inverse[0][0];
+        cR.y = inverse[0][1];
+        cR.z = inverse[0][2];
+ 
+        cG.x = inverse[1][0];
+        cG.y = inverse[1][1];
+        cG.z = inverse[1][2];
+ 
+        cB.x = inverse[2][0];
+        cB.y = inverse[2][1];
+        cB.z = inverse[2][2];
+ 
+        return (r * cR + g * cG + b * cB);
+ 
+    }
+ 
+ 
+ 
+ 
     void process() {
         // Read the input image
  
@@ -87,6 +275,9 @@ kernel Tetra : ImageComputationKernel<ePixelWise>
         corners[5] = mag;
  
         float3 output = tetra( rgb , corners);
+        if (inv){
+            output = inv_tetra( rgb , corners);
+        }
  
  
         // Write the result to the output image
